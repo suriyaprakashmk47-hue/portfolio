@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suriya Prakash — GenAI Engineer</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --ink:#12141C;
+    --panel:#191C27;
+    --panel-2:#1F2330;
+    --line: rgba(241,239,234,0.10);
+    --line-strong: rgba(241,239,234,0.22);
+    --paper:#F1EFEA;
+    --paper-dim: rgba(241,239,234,0.62);
+    --paper-faint: rgba(241,239,234,0.38);
+    --amber:#E8A33D;
+    --amber-dim: rgba(232,163,61,0.15);
+    --teal:#6FB7A8;
+    --display: 'Space Grotesk', sans-serif;
+    --body: 'IBM Plex Sans', sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--ink);
+    color:var(--paper);
+    font-family:var(--body);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{color:inherit;text-decoration:none;}
+
+  ::selection{background:var(--amber); color:var(--ink);}
+
+  .wrap{max-width:1080px; margin:0 auto; padding:0 32px;}
+
+  /* ---------- Flow spine: the through-line motif ---------- */
+  .spine{
+    position:absolute;
+    left:50%;
+    top:0;
+    bottom:0;
+    width:1px;
+    background:var(--line);
+    z-index:0;
+    pointer-events:none;
+  }
+  .spine-track{position:relative; max-width:1080px; margin:0 auto;}
+
+  .node{
+    position:relative;
+    z-index:1;
+  }
+  .node::before{
+    content:'';
+    position:absolute;
+    left:50%;
+    top:-3px;
+    width:7px; height:7px;
+    background:var(--amber);
+    border-radius:50%;
+    transform:translateX(-50%);
+    box-shadow:0 0 0 4px var(--ink), 0 0 0 5px var(--line-strong);
+  }
+
+  /* ---------- Nav ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(18,20,28,0.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav.wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    height:64px;
+  }
+  .brand{
+    font-family:var(--mono);
+    font-size:13px;
+    letter-spacing:0.02em;
+    color:var(--paper-dim);
+  }
+  .brand b{color:var(--paper); font-weight:600;}
+  .navlinks{display:flex; gap:28px; font-family:var(--mono); font-size:12.5px; letter-spacing:0.03em;}
+  .navlinks a{color:var(--paper-dim); transition:color .2s ease; padding:4px 0;}
+  .navlinks a:hover{color:var(--amber);}
+  @media (max-width:680px){ .navlinks{display:none;} }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    padding:96px 0 80px;
+    position:relative;
+  }
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12.5px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--amber);
+    display:flex; align-items:center; gap:10px;
+    margin-bottom:22px;
+  }
+  .eyebrow::before{
+    content:'';
+    width:18px; height:1px;
+    background:var(--amber);
+  }
+  .pulse{
+    width:6px; height:6px; border-radius:50%;
+    background:var(--amber);
+    animation:pulse 2.2s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%,100%{opacity:1; box-shadow:0 0 0 0 rgba(232,163,61,0.5);}
+    50%{opacity:.6; box-shadow:0 0 0 6px rgba(232,163,61,0);}
+  }
+  h1{
+    font-family:var(--display);
+    font-weight:700;
+    font-size:clamp(38px, 6vw, 64px);
+    line-height:1.05;
+    letter-spacing:-0.01em;
+    max-width:820px;
+  }
+  h1 .accent{color:var(--amber); font-style:normal;}
+  .role-line{
+    font-family:var(--mono);
+    font-size:15px;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    color:var(--amber);
+    margin-top:14px;
+  }
+  .hero-sub{
+    margin-top:22px;
+    max-width:620px;
+    font-size:17px;
+    color:var(--paper-dim);
+    line-height:1.65;
+  }
+  .contact-row{
+    margin-top:34px;
+    display:flex; flex-wrap:wrap; gap:14px;
+  }
+  .chip{
+    font-family:var(--mono);
+    font-size:12.5px;
+    color:var(--paper-dim);
+    border:1px solid var(--line-strong);
+    padding:8px 14px;
+    border-radius:100px;
+    display:flex; align-items:center; gap:8px;
+    transition:all .2s ease;
+  }
+  .chip:hover{border-color:var(--amber); color:var(--paper); transform:translateY(-1px);}
+
+  /* ---------- Semantic search demo (signature element) ---------- */
+  .demo{
+    margin-top:56px;
+    border:1px solid var(--line-strong);
+    background:var(--panel);
+    border-radius:14px;
+    overflow:hidden;
+  }
+  .demo-head{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:12px 18px;
+    border-bottom:1px solid var(--line);
+    font-family:var(--mono);
+    font-size:11.5px;
+    color:var(--paper-faint);
+    letter-spacing:0.04em;
+  }
+  .dots{display:flex; gap:6px;}
+  .dots span{width:8px; height:8px; border-radius:50%; background:var(--line-strong);}
+  .demo-body{padding:20px;}
+  .demo-label{
+    font-family:var(--mono); font-size:11.5px; color:var(--paper-faint);
+    margin-bottom:8px; text-transform:uppercase; letter-spacing:0.06em;
+  }
+  .demo-input{
+    width:100%;
+    background:var(--panel-2);
+    border:1px solid var(--line-strong);
+    border-radius:8px;
+    padding:12px 14px;
+    color:var(--paper);
+    font-family:var(--mono);
+    font-size:13.5px;
+    outline:none;
+  }
+  .demo-input:focus{border-color:var(--amber);}
+  .demo-results{margin-top:16px; display:flex; flex-direction:column; gap:10px;}
+  .result{
+    display:flex; align-items:center; gap:14px;
+    padding:11px 13px;
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    border-radius:8px;
+    font-size:13.5px;
+    opacity:0;
+    transform:translateY(4px);
+    animation:rise .4s ease forwards;
+  }
+  @keyframes rise{to{opacity:1; transform:translateY(0);}}
+  .score{
+    font-family:var(--mono);
+    font-size:11.5px;
+    color:var(--ink);
+    background:var(--teal);
+    padding:3px 8px;
+    border-radius:5px;
+    flex-shrink:0;
+    min-width:44px;
+    text-align:center;
+  }
+  .result-text{color:var(--paper-dim);}
+  .demo-caption{
+    margin-top:14px; font-family:var(--mono); font-size:11px; color:var(--paper-faint);
+  }
+
+  /* ---------- Sections ---------- */
+  section{padding:64px 0; position:relative;}
+  .section-head{
+    display:flex; align-items:baseline; gap:16px;
+    margin-bottom:40px;
+  }
+  .section-num{
+    font-family:var(--mono); font-size:12px; color:var(--amber);
+  }
+  h2{
+    font-family:var(--display);
+    font-weight:600;
+    font-size:28px;
+    letter-spacing:-0.01em;
+  }
+  .section-line{flex:1; height:1px; background:var(--line);}
+
+  /* Summary */
+  .terminal{
+    background:var(--panel);
+    border:1px solid var(--line-strong);
+    border-radius:12px;
+    padding:24px 26px;
+    font-family:var(--mono);
+    font-size:14px;
+    line-height:1.8;
+    color:var(--paper-dim);
+  }
+  .terminal .prompt{color:var(--amber);}
+  .terminal .caret{
+    display:inline-block; width:8px; height:16px; background:var(--amber);
+    vertical-align:middle; margin-left:2px;
+    animation:blink 1s step-end infinite;
+  }
+  @keyframes blink{50%{opacity:0;}}
+
+  /* Experience */
+  .exp-card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:28px 30px;
+  }
+  .exp-top{
+    display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-start; gap:12px;
+    margin-bottom:6px;
+  }
+  .exp-role{font-family:var(--display); font-size:20px; font-weight:600;}
+  .exp-org{color:var(--amber); font-size:15px; margin-top:2px;}
+  .exp-meta{
+    font-family:var(--mono); font-size:12px; color:var(--paper-faint);
+    text-align:right;
+  }
+  .exp-client{
+    font-family:var(--mono); font-size:12px; color:var(--paper-faint);
+    margin:12px 0 18px;
+    padding:6px 12px;
+    border-left:2px solid var(--amber);
+    background:var(--amber-dim);
+    display:inline-block;
+  }
+  .exp-list{list-style:none; display:flex; flex-direction:column; gap:11px;}
+  .exp-list li{
+    display:flex; gap:12px;
+    font-size:14.5px;
+    color:var(--paper-dim);
+    line-height:1.6;
+  }
+  .exp-list li::before{
+    content:'▸';
+    color:var(--teal);
+    flex-shrink:0;
+    font-size:13px;
+    margin-top:2px;
+  }
+
+  /* Project */
+  .project-card{
+    background:var(--panel);
+    border:1px solid var(--line-strong);
+    border-radius:12px;
+    padding:30px 32px;
+    position:relative;
+    overflow:hidden;
+  }
+  .project-card::before{
+    content:'FEATURED';
+    position:absolute; top:0; right:0;
+    font-family:var(--mono); font-size:10px; letter-spacing:0.1em;
+    color:var(--ink); background:var(--amber);
+    padding:5px 12px 5px 16px;
+    border-bottom-left-radius:10px;
+  }
+  .project-title{font-family:var(--display); font-size:22px; font-weight:600; max-width:520px;}
+  .project-desc{margin-top:10px; color:var(--paper-dim); font-size:14.5px; max-width:620px; line-height:1.65;}
+
+  .flow{
+    margin:26px 0 24px;
+    display:flex; align-items:center; gap:0;
+    overflow-x:auto;
+    padding-bottom:6px;
+  }
+  .flow-node{
+    font-family:var(--mono); font-size:11.5px;
+    color:var(--paper);
+    background:var(--panel-2);
+    border:1px solid var(--line-strong);
+    padding:8px 13px;
+    border-radius:7px;
+    white-space:nowrap;
+    flex-shrink:0;
+  }
+  .flow-arrow{
+    color:var(--paper-faint);
+    padding:0 8px;
+    flex-shrink:0;
+  }
+
+  .stack-row{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:22px;}
+  .stack-chip{
+    font-family:var(--mono); font-size:11.5px;
+    color:var(--teal);
+    border:1px solid rgba(111,183,168,0.35);
+    padding:5px 11px;
+    border-radius:100px;
+  }
+
+  /* Skills */
+  .skills-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+    border-radius:12px;
+    overflow:hidden;
+  }
+  .skill-cat{background:var(--panel); padding:22px 24px;}
+  .skill-cat-title{
+    font-family:var(--mono); font-size:11px; letter-spacing:0.06em; text-transform:uppercase;
+    color:var(--amber); margin-bottom:14px;
+  }
+  .skill-tags{display:flex; flex-wrap:wrap; gap:7px;}
+  .skill-tag{
+    font-size:13px; color:var(--paper-dim);
+    background:var(--panel-2);
+    padding:5px 10px;
+    border-radius:6px;
+    border:1px solid var(--line);
+  }
+
+  /* Education */
+  .edu-row{
+    display:flex; justify-content:space-between; align-items:flex-start;
+    flex-wrap:wrap; gap:10px;
+    padding:22px 0;
+    border-top:1px solid var(--line);
+  }
+  .edu-name{font-family:var(--display); font-size:17px; font-weight:600;}
+  .edu-degree{color:var(--paper-dim); font-size:14px; margin-top:4px;}
+  .edu-years{font-family:var(--mono); font-size:12.5px; color:var(--paper-faint);}
+
+  /* Footer */
+  footer{
+    padding:56px 0 48px;
+    border-top:1px solid var(--line);
+  }
+  .footer-inner{
+    display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:20px;
+  }
+  .footer-title{font-family:var(--display); font-size:22px; font-weight:600;}
+  .footer-sub{color:var(--paper-faint); font-size:13px; margin-top:6px; font-family:var(--mono);}
+  .footer-links{display:flex; gap:14px;}
+  .footer-links a{
+    font-family:var(--mono); font-size:12.5px;
+    border:1px solid var(--line-strong);
+    padding:9px 16px; border-radius:100px;
+    color:var(--paper-dim);
+    transition:all .2s ease;
+  }
+  .footer-links a:hover{border-color:var(--amber); color:var(--paper);}
+
+  /* Reveal on scroll */
+  .reveal{opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+
+  @media (prefers-reduced-motion: reduce){
+    .reveal{opacity:1; transform:none; transition:none;}
+    .pulse{animation:none;}
+    .terminal .caret{animation:none;}
+  }
+
+  @media (max-width:640px){
+    .hero{padding:64px 0 56px;}
+    section{padding:48px 0;}
+    .exp-meta{text-align:left;}
+    .exp-top{flex-direction:column;}
+  }
+
+  :focus-visible{outline:2px solid var(--amber); outline-offset:3px;}
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <div class="brand"><b>Suriya Prakash</b> · GenAI Engineer</div>
+    <div class="navlinks">
+      <a href="#work">Experience</a>
+      <a href="#project">Project</a>
+      <a href="#skills">Skills</a>
+      <a href="#education">Education</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="eyebrow"><span class="pulse"></span>Available for new opportunities</div>
+      <h1>Suriya Prakash</h1>
+      <div class="role-line">GenAI Engineer</div>
+      <p class="hero-sub">Building retrieval systems that <span class="accent">know what they don't know.</span> 1+ years shipping LLM applications, RAG pipelines, and serverless AI infrastructure on AWS — currently designing fraud-investigation systems for a Netherlands-based bank.</p>
+
+      <div class="contact-row">
+        <a class="chip" href="tel:7530039223">📞 7530039223</a>
+        <a class="chip" href="mailto:suriyaprakashm22@gmail.com">✉ suriyaprakashm22@gmail.com</a>
+        <a class="chip" href="https://linkedin.com/in/suriyaprakashm-m" target="_blank" rel="noopener">in/suriyaprakashm-m</a>
+      </div>
+
+      <!-- Signature interactive: semantic search demo -->
+      <div class="demo">
+        <div class="demo-head">
+          <span>semantic_search.query()</span>
+          <div class="dots"><span></span><span></span><span></span></div>
+        </div>
+        <div class="demo-body">
+          <div class="demo-label">Try a query — this mimics how his RAG pipelines retrieve context</div>
+          <input class="demo-input" id="searchInput" type="text" placeholder="e.g. flag suspicious transaction pattern" value="flag suspicious transaction pattern">
+          <div class="demo-results" id="searchResults"></div>
+          <div class="demo-caption">// cosine similarity over FAISS index · illustrative, not a live model</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="spine-track">
+  <div class="spine"></div>
+
+  <!-- SUMMARY -->
+  <section class="reveal node">
+    <div class="wrap">
+      <div class="section-head"><span class="section-num">00</span><h2>Summary</h2><div class="section-line"></div></div>
+      <div class="terminal">
+        <span class="prompt">&gt;</span> Dynamic Generative AI Engineer with 1+ years of hands-on experience designing and deploying LLM-powered applications, RAG pipelines, and serverless AI solutions on AWS.<br>
+        <span class="prompt">&gt;</span> Proven ability to deliver impactful results by integrating vector databases, prompt engineering, and cloud-native architectures.<br>
+        <span class="prompt">&gt;</span> Adept at building scalable, production-ready AI systems that solve real-world business challenges efficiently and responsibly.<span class="caret"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section class="reveal node" id="work">
+    <div class="wrap">
+      <div class="section-head"><span class="section-num">01</span><h2>Work Experience</h2><div class="section-line"></div></div>
+      <div class="exp-card">
+        <div class="exp-top">
+          <div>
+            <div class="exp-role">Generative AI Engineer</div>
+            <div class="exp-org">Centaur Billing IT Solutions</div>
+          </div>
+          <div class="exp-meta">May 2025 — Present</div>
+        </div>
+        <div class="exp-client">client: NIBC Bank, Netherlands</div>
+        <ul class="exp-list">
+          <li>Designed and deployed LLM-powered enterprise applications and RAG pipelines for real clients across financial services and knowledge management domains.</li>
+          <li>Built an end-to-end document intelligence platform integrating FAISS vector store and SentenceTransformers, enabling fast, accurate natural language search across thousands of documents.</li>
+          <li>Developed serverless AI pipelines on AWS using Lambda, API Gateway, Step Functions, S3, and Bedrock to support concurrent users with high availability and low latency.</li>
+          <li>Integrated Generative AI with enterprise data sources — PDFs, CSVs, REST APIs — for intelligent querying and summarization.</li>
+          <li>Engineered prompt templates and version-controlled them in Git, reducing hallucinations and ensuring consistent, reliable AI outputs in production.</li>
+          <li>Implemented semantic caching, prompt compression, and output guardrails to optimize cost and ensure responsible AI usage.</li>
+          <li>Collaborated with ML teams, business stakeholders, and cloud architects to translate business requirements into scalable Gen AI solutions.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECT -->
+  <section class="reveal node" id="project">
+    <div class="wrap">
+      <div class="section-head"><span class="section-num">02</span><h2>Featured Project</h2><div class="section-line"></div></div>
+      <div class="project-card">
+        <div class="project-title">GenAI Fraud Investigation &amp; Risk Scoring Platform</div>
+        <p class="project-desc">Event-driven, multi-agent GenAI platform for banking that analyzes transactions, account behavior, fraud patterns, and AML alerts to flag suspicious activity and generate AI-assisted investigation summaries for fraud analysts.</p>
+
+        <div class="flow">
+          <div class="flow-node">Transaction event</div><div class="flow-arrow">→</div>
+          <div class="flow-node">LangGraph agents</div><div class="flow-arrow">→</div>
+          <div class="flow-node">RAG · AML rules</div><div class="flow-arrow">→</div>
+          <div class="flow-node">Risk scoring</div><div class="flow-arrow">→</div>
+          <div class="flow-node">Bedrock Claude summary</div><div class="flow-arrow">→</div>
+          <div class="flow-node">Analyst review</div>
+        </div>
+
+        <div class="stack-row">
+          <span class="stack-chip">Python</span><span class="stack-chip">FastAPI</span><span class="stack-chip">LangGraph</span>
+          <span class="stack-chip">AWS Bedrock Claude</span><span class="stack-chip">Titan Embeddings</span><span class="stack-chip">DynamoDB</span>
+          <span class="stack-chip">Lambda</span><span class="stack-chip">SQS</span><span class="stack-chip">OpenSearch</span>
+          <span class="stack-chip">RAGAS</span><span class="stack-chip">Guardrails</span>
+        </div>
+
+        <ul class="exp-list">
+          <li>Designed a multi-agent GenAI workflow with LangGraph for fraud classification, risk scoring, AML validation, and escalation handling.</li>
+          <li>Built RAG pipelines using Titan embeddings and OpenSearch Vector DB to retrieve banking policies, AML rules, and compliance documents.</li>
+          <li>Integrated AWS Bedrock Claude to generate fraud investigation summaries, risk explanations, and analyst recommendations.</li>
+          <li>Combined transaction patterns, customer history, and rule-based indicators with LLM reasoning to compute risk scores.</li>
+          <li>Exposed fraud investigation services via FastAPI endpoints, with audit logging and monitoring through DynamoDB and CloudWatch.</li>
+          <li>Added guardrails against unsafe recommendations and hallucinated compliance statements; evaluated RAG quality using RAGAS (faithfulness, answer relevance, context precision, context recall).</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section class="reveal node" id="skills">
+    <div class="wrap">
+      <div class="section-head"><span class="section-num">03</span><h2>Skills</h2><div class="section-line"></div></div>
+      <div class="skills-grid">
+        <div class="skill-cat">
+          <div class="skill-cat-title">Programming</div>
+          <div class="skill-tags"><span class="skill-tag">Python</span><span class="skill-tag">SQL</span></div>
+        </div>
+        <div class="skill-cat">
+          <div class="skill-cat-title">AI / Generative AI</div>
+          <div class="skill-tags">
+            <span class="skill-tag">LLMs</span><span class="skill-tag">Prompt Engineering</span><span class="skill-tag">RAG</span>
+            <span class="skill-tag">Embeddings</span><span class="skill-tag">Semantic Search</span><span class="skill-tag">Model Versioning</span>
+          </div>
+        </div>
+        <div class="skill-cat">
+          <div class="skill-cat-title">Frameworks &amp; Libraries</div>
+          <div class="skill-tags">
+            <span class="skill-tag">LangChain</span><span class="skill-tag">LangGraph</span><span class="skill-tag">SentenceTransformers</span>
+            <span class="skill-tag">FastAPI</span><span class="skill-tag">Pandas</span><span class="skill-tag">NumPy</span>
+          </div>
+        </div>
+        <div class="skill-cat">
+          <div class="skill-cat-title">Vector Databases</div>
+          <div class="skill-tags"><span class="skill-tag">Pinecone</span><span class="skill-tag">FAISS</span></div>
+        </div>
+        <div class="skill-cat">
+          <div class="skill-cat-title">Cloud Platforms</div>
+          <div class="skill-tags">
+            <span class="skill-tag">AWS S3</span><span class="skill-tag">Lambda</span><span class="skill-tag">API Gateway</span>
+            <span class="skill-tag">Step Functions</span><span class="skill-tag">Bedrock</span><span class="skill-tag">CloudWatch</span><span class="skill-tag">IAM</span>
+          </div>
+        </div>
+        <div class="skill-cat">
+          <div class="skill-cat-title">Tools &amp; Platforms</div>
+          <div class="skill-tags">
+            <span class="skill-tag">Git</span><span class="skill-tag">Docker</span><span class="skill-tag">CI/CD</span>
+            <span class="skill-tag">Jupyter</span><span class="skill-tag">VS Code</span><span class="skill-tag">Postman</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section class="reveal node" id="education">
+    <div class="wrap">
+      <div class="section-head"><span class="section-num">04</span><h2>Education</h2><div class="section-line"></div></div>
+      <div class="edu-row">
+        <div>
+          <div class="edu-name">RVS College of Arts and Science</div>
+          <div class="edu-degree">Bachelor of Science — Information Technology</div>
+        </div>
+        <div class="edu-years">2022 — 2025</div>
+      </div>
+    </div>
+  </section>
+
+  </div><!-- /spine-track -->
+
+</main>
+
+<footer>
+  <div class="wrap footer-inner">
+    <div>
+      <div class="footer-title">Let's build something.</div>
+      <div class="footer-sub">Open to Generative AI &amp; ML Engineering roles</div>
+    </div>
+    <div class="footer-links">
+      <a href="mailto:suriyaprakashm22@gmail.com">Email</a>
+      <a href="tel:7530039223">Call</a>
+      <a href="https://linkedin.com/in/suriyaprakashm-m" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Reveal on scroll
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => io.observe(el));
+
+  // Signature semantic search demo
+  const corpus = [
+    { text: "AML alert: repeated wire transfers below reporting threshold across linked accounts.", tag: "AML" },
+    { text: "Customer behavior deviates from 90-day transaction baseline — velocity spike detected.", tag: "Risk" },
+    { text: "Bedrock Claude-generated investigation summary flags structuring pattern for analyst review.", tag: "Summary" },
+    { text: "Compliance policy §4.2: escalate transactions exceeding cross-border risk score of 0.8.", tag: "Policy" },
+    { text: "LangGraph agent routes case to AML validation node after rule-based indicator match.", tag: "Agent" },
+  ];
+
+  function runSearch(query){
+    const results = document.getElementById('searchResults');
+    results.innerHTML = '';
+    if(!query.trim()) return;
+    // deterministic pseudo-similarity based on query length/hash, purely illustrative
+    const scored = corpus.map((c, i) => {
+      let seed = query.length + query.charCodeAt(i % query.length) + i * 7;
+      let score = 0.62 + ((seed % 34) / 100);
+      return { ...c, score: Math.min(score, 0.97) };
+    }).sort((a,b) => b.score - a.score).slice(0,3);
+
+    scored.forEach((r, i) => {
+      const div = document.createElement('div');
+      div.className = 'result';
+      div.style.animationDelay = (i * 0.08) + 's';
+      div.innerHTML = `<span class="score">${r.score.toFixed(2)}</span><span class="result-text">${r.text}</span>`;
+      results.appendChild(div);
+    });
+  }
+
+  const input = document.getElementById('searchInput');
+  runSearch(input.value);
+  let debounce;
+  input.addEventListener('input', () => {
+    clearTimeout(debounce);
+    debounce = setTimeout(() => runSearch(input.value), 250);
+  });
+</script>
+
+</body>
+</html>
